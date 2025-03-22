@@ -1,0 +1,6 @@
+@Mission11Bellini_HostAddress = http://localhost:5063
+
+GET {{Mission11Bellini_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
