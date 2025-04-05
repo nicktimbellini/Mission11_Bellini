@@ -25,12 +25,14 @@ const defaultBook: Book = {
   price: 0
 };
 
+const API = 'https://localhost:7220/api/books'; // ✅ Use full API path
+
 const AdminBooks = () => {
   const [books, setBooks] = useState<Book[]>([]);
   const [editingBook, setEditingBook] = useState<Book>(defaultBook);
 
   const loadBooks = () => {
-    axios.get('/api/books').then(res => setBooks(res.data));
+    axios.get(API).then(res => setBooks(res.data));
   };
 
   useEffect(() => {
@@ -48,14 +50,12 @@ const AdminBooks = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (editingBook.bookId === 0) {
-      // New book
-      axios.post('/api/books', editingBook).then(() => {
+      axios.post(API, editingBook).then(() => {
         loadBooks();
         setEditingBook(defaultBook);
       });
     } else {
-      // Edit existing
-      axios.put(`/api/books/${editingBook.bookId}`, editingBook).then(() => {
+      axios.put(`${API}/${editingBook.bookId}`, editingBook).then(() => {
         loadBooks();
         setEditingBook(defaultBook);
       });
@@ -68,7 +68,7 @@ const AdminBooks = () => {
 
   const handleDelete = (id: number) => {
     if (window.confirm("Are you sure you want to delete this book?")) {
-      axios.delete(`/api/books/${id}`).then(() => loadBooks());
+      axios.delete(`${API}/${id}`).then(() => loadBooks());
     }
   };
 

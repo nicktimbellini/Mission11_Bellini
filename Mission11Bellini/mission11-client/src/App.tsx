@@ -3,17 +3,19 @@ import { Routes, Route, Link } from 'react-router-dom';
 import BookList from './BookList';
 import CartPage from './CartPage';
 import CartSummary from './CartSummary';
+import AdminBooks from './AdminBooks'; // 👈 Import your new admin page
 
 function App() {
   return (
     <div className="container mt-4">
-      {/* Navbar with links */}
+      {/* Navigation */}
       <nav className="mb-4">
         <Link to="/" className="btn btn-outline-primary me-2">Home</Link>
-        <Link to="/cart" className="btn btn-outline-success">View Cart</Link>
+        <Link to="/cart" className="btn btn-outline-success me-2">Cart</Link>
+        <Link to="/adminbooks" className="btn btn-outline-dark">Admin</Link>
       </nav>
 
-      {/* Routes for page navigation */}
+      {/* Routes */}
       <Routes>
         <Route
           path="/"
@@ -42,6 +44,7 @@ function App() {
           }
         />
         <Route path="/cart" element={<CartPage />} />
+        <Route path="/adminbooks" element={<AdminBooks />} /> 
       </Routes>
     </div>
   );
