@@ -21,18 +21,31 @@ namespace Mission11Bellini.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks(int page = 1, int pageSize = 5, string sort = "Title")
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks(
+           int page = 1,
+           int pageSize = 5,
+           string sort = "Title",
+           string? category = null)
         {
-            // Fix sort string: capitalize first letter to match C# property names
+            // Capitalize sort field (e.g., "title" -> "Title")
             sort = char.ToUpper(sort[0]) + sort.Substring(1);
 
-            // Get books with sorting and pagination
-            var books = _context.Books
+            // Build the query
+            var query = _context.Books.AsQueryable();
+
+            // Apply category filter if provided
+            if (!string.IsNullOrEmpty(category))
+            {
+                query = query.Where(b => b.Category == category);
+            }
+
+            // Apply sorting and pagination
+            query = query
                 .OrderBy(b => EF.Property<object>(b, sort))
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize);
 
-            return await books.ToListAsync();
+            return await query.ToListAsync();
         }
 
         // GET: api/Books/5
